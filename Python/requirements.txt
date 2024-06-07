@@ -1,0 +1,7 @@
+aiogram
+httplib2
+apiclient
+oauth2client
+loguru
+pandas
+python-dotenv==1.0.0
