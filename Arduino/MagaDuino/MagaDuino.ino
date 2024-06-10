@@ -124,7 +124,7 @@ void loop() {
       Serial.println("ISNT WINDY ENOUGH");
       } 
     } else {
-      #Serial.println("SYSTEM IS TURNED OFF");
+      Serial.println("SYSTEM IS TURNED OFF");
     }
     dataTimer = millis();
   }
