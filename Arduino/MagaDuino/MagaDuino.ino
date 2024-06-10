@@ -10,7 +10,6 @@
 #define DHT_IN_TYPE DHT11 // Тип датчика DHT11_IN
 #define DHT_OUT_TYPE DHT11 // Тип датчика DHT11_OUT
 
-
 const char* ssid = "your_SSID"; // Укажите ваш SSID
 const char* password = "your_password"; // Укажите ваш пароль
 const char* serverName = "http://your_server_address:8080"; // Укажите IP адрес вашего сервера
@@ -52,12 +51,13 @@ void loop() {
   float humidity_out = dht_out.readHumidity();
   float temperatire_out = dht_out.readTemperature();
   anemoValue = analogRead(AnemoPin);
+  
 
-  if (anemoValue >= 2048 && !anemoChange){
+  if (anemoValue >= 2200 && !anemoChange){
     countSignals = countSignals + 1;
     anemoChange=true;
   }
-  if (anemoValue < 2048 && anemoChange){
+  if (anemoValue < 2200 && anemoChange){
     anemoChange=false;
   }
 
@@ -72,8 +72,7 @@ void loop() {
   }
 
   if (millis() - dataTimer > time_to_proccess){
-    dataTimer = millis();
-    float wind_speed=M_PI*countSignals*0.33/(24*2);
+    float wind_speed=M_PI*countSignals*0.28/(24*2);
     countSignals=0;
   
     // Формирование сообщения для отправки на сервер
@@ -99,8 +98,9 @@ void loop() {
     if (wind_speed < 0.5) {
       isWindy = false;
     }
+    
     if (digitalRead(ButtonPin) == 0){
-      if ((millis() - lastWindSpeedPositiveTime) >= 1200000 && isWindy) {
+      if ((millis() - lastWindSpeedPositiveTime) >= time_to_work && isWindy) {
         if (WiFi.status() == WL_CONNECTED){
           HTTPClient http;
           http.begin(serverName);
@@ -124,7 +124,8 @@ void loop() {
       Serial.println("ISNT WINDY ENOUGH");
       } 
     } else {
-      Serial.println("SYSTEM IS TURNED OFF");
+      #Serial.println("SYSTEM IS TURNED OFF");
     }
+    dataTimer = millis();
   }
 }
