@@ -77,7 +77,7 @@ main() {
         file=$(ls "$DOWNLOAD_DIR" | grep "^$pkg" | head -n 1)
         if [ -n "$file" ]; then
             echo "Installing $file"
-            apk add "$DOWNLOAD_DIR/$file"
+            apk add --allow-untrusted apk add --allow-untrusted "$DOWNLOAD_DIR/$file"
             sleep 3
         fi
     done
@@ -89,7 +89,7 @@ main() {
             read -r -p '' RUS
             case $RUS in
             y)
-                apk add "$DOWNLOAD_DIR/$ru"
+                apk add --allow-untrusted "$DOWNLOAD_DIR/$ru"
                 break
                 ;;
             n)
@@ -123,7 +123,7 @@ add_tunnel() {
         case $TUNNEL in
 
         1)
-            apk add wireguard-tools luci-proto-wireguard luci-app-wireguard
+            apk add --allow-untrusted wireguard-tools luci-proto-wireguard luci-app-wireguard
 
             printf "\033[32;1mDo you want to configure the wireguard interface? (y/n): \033[0m\n"
             read IS_SHOULD_CONFIGURE_WG_INTERFACE
@@ -151,13 +151,13 @@ add_tunnel() {
             ;;
 
         3)
-            apk add apk add openvpn-openssl luci-app-openvpn
+            apk add --allow-untrusted apk add --allow-untrusted openvpn-openssl luci-app-openvpn
             printf "\e[1;32mUse these instructions to configure https://itdog.info/nastrojka-klienta-openvpn-na-openwrt/\e[0m\n"
             break
             ;;
 
         4)
-            apk add apk add openconnect luci-proto-openconnect
+            apk add --allow-untrusted apk add --allow-untrusted openconnect luci-proto-openconnect
             printf "\e[1;32mUse these instructions to configure https://itdog.info/nastrojka-klienta-openconnect-na-openwrt/\e[0m\n"
             break
             ;;
@@ -205,7 +205,7 @@ install_awg_packages() {
             exit 1
         fi
         
-        apk add "$AWG_DIR/$KMOD_AMNEZIAWG_FILENAME"
+        apk add --allow-untrusted "$AWG_DIR/$KMOD_AMNEZIAWG_FILENAME"
 
         if [ $? -eq 0 ]; then
             echo "kmod-amneziawg file downloaded successfully"
@@ -229,7 +229,7 @@ install_awg_packages() {
             exit 1
         fi
 
-        apk add "$AWG_DIR/$AMNEZIAWG_TOOLS_FILENAME"
+        apk add --allow-untrusted "$AWG_DIR/$AMNEZIAWG_TOOLS_FILENAME"
 
         if [ $? -eq 0 ]; then
             echo "amneziawg-tools file downloaded successfully"
@@ -253,7 +253,7 @@ install_awg_packages() {
             exit 1
         fi
 
-        apk add "$AWG_DIR/$LUCI_APP_AMNEZIAWG_FILENAME"
+        apk add --allow-untrusted "$AWG_DIR/$LUCI_APP_AMNEZIAWG_FILENAME"
 
         if [ $? -eq 0 ]; then
             echo "luci-app-amneziawg file downloaded successfully"
